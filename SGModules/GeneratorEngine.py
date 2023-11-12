@@ -10,6 +10,7 @@ sudoku = list()
 slvdsudoku = list()
 ccn = 0
 gl = []
+indeadend = 0
 
 
 class SavedStatus():
@@ -255,6 +256,9 @@ def GuessManager(sv):
 	global sudoku
 	global siz
 	global gl
+	global indeadend
+	
+	indeadend = 0
 	
 	ps = GetPosSol(sv)
 	mv = min(min(ps[cnt]) for cnt in range(siz))
@@ -299,10 +303,18 @@ def Solving():
 	global cols
 	global div
 	global ccn
+	global indeadend
 	
 	fv = CheckSolutions()
+	if ccn == 0:
+		indeadend = 0
+	else:
+		ps = GetPosSol(fv)
+		mv = min(min(ps[cnt]) for cnt in range(siz))
+		if mv == -1:
+			indeadend = 1
 	
-	if (ccn == 0 or coherencychecker(sudoku) == True):
+	if ((ccn == 0 or coherencychecker(sudoku) == True) and indeadend == 0):
 		a = SimpleSolution(fv)
 		if a == 0:
 			a = 2*IntermediateSolution(fv)
