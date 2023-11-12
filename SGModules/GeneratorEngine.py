@@ -235,15 +235,14 @@ def HardSolution(fv):
 
 #Number of possible solutions in each cell
 def GetPosSol(fv):
-	global rows
-	global cols
+	global siz
 	global div
 	global sudoku
 	
 	#Very high value means there is already a value in the given cell
-	sols = [[10000000 for _ in range(cols)] for _ in range(rows)]
-	for cntr in range(rows):
-		for cntc in range(cols):
+	sols = [[10000000 for _ in range(siz)] for _ in range(siz)]
+	for cntr in range(siz):
+		for cntc in range(siz):
 			#At least one solution can be fit in the given cell
 			if len(fv[cntr][cntc]) != 0:
 				sols[cntr][cntc] = len(fv[cntr][cntc])
