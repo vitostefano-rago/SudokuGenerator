@@ -233,14 +233,23 @@ def HardSolution(fv):
 		t = IntermediateSolution(ev)
 	return t
 
+#Number of possible solutions in each cell
 def GetPosSol(fv):
-	global siz
+	global rows
+	global cols
 	global div
-	sols = [[10000000 for _ in range(siz)] for _ in range(siz)]
-	for cntr in range(siz):
-		for cntc in range(siz):
+	global sudoku
+	
+	#Very high value means there is already a value in the given cell
+	sols = [[10000000 for _ in range(cols)] for _ in range(rows)]
+	for cntr in range(rows):
+		for cntc in range(cols):
+			#At least one solution can be fit in the given cell
 			if len(fv[cntr][cntc]) != 0:
 				sols[cntr][cntc] = len(fv[cntr][cntc])
+			#No solutions can be fit into an empty cell
+			elif sudoku[cntr][cntc] == 0:
+				sols[cntr][cntc] = -1
 	return sols
 
 def GuessManager(sv):
@@ -266,7 +275,7 @@ def GuessManager(sv):
 					return 1
 	
 	#Case algorithm got stuck, needs to go back.
-	if mv == 0 or mv > 999999 or coherencychecker(sudoku) != True:
+	if mv == -1 or mv > 999999 or coherencychecker(sudoku) != True:
 		while True:
 			if len(gl) > 0:
 				lst = gl.pop()
